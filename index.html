@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Management Portal</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #202840;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 25px 8%;
+        }
+
+        header h1 {
+            margin-bottom: 6px;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 22px;
+            font-weight: bold;
+        }
+
+        .hero {
+            padding: 45px 8%;
+            background: linear-gradient(120deg, #2563eb, #7c3aed);
+            color: white;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            max-width: 700px;
+        }
+
+        .container {
+            padding: 30px 8%;
+        }
+
+        .announcement {
+            background: #dbeafe;
+            border-left: 5px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        input, select, button {
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        input, select {
+            background: white;
+        }
+
+        .filters input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px #0000000d;
+            border-top: 4px solid #2563eb;
+        }
+
+        .event-card h3 {
+            margin: 10px 0;
+        }
+
+        .category {
+            display: inline-block;
+            background: #ede9fe;
+            color: #5b21b6;
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .event-card p {
+            margin: 7px 0;
+            font-size: 14px;
+        }
+
+        .event-card button, .primary-button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #047857;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 22px;
+            background: #172554;
+            color: white;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>CampusConnect</h1>
+        <p>College Event Management Portal</p>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#events">Events</a>
+            <a href="#registration">Registration</a>
+            <a href="#faculty">Faculty Corner</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h2>Discover. Participate. Celebrate.</h2>
+        <p>
+            Explore college events, discover new opportunities, register
+            for activities, and stay updated with campus life.
+        </p>
+    </section>
+
+    <main class="container">
+        <div class="announcement">
+            <strong>NEW FEATURE: Student Early Registration!</strong>
+            Register for upcoming events before seats fill up.
+            Check the available seats on each event card.
+        </div>
+
+        <section id="events">
+            <h2>Upcoming College Events</h2>
+            <p>Search events by title or venue and filter by category.</p>
+
+            <div class="filters">
+                <input
+                    type="text"
+                    id="search"
+                    placeholder="Search events or venues..."
+                    aria-label="Search events or venues"
+                >
+
+                <select id="categoryFilter" aria-label="Filter by category">
+                    <option value="All">All Categories</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Cultural">Cultural</option>
+                    <option value="Career">Career</option>
+                    <option value="Sports">Sports</option>
+                </select>
+            </div>
+
+            <div class="event-grid" id="eventGrid"></div>
+        </section>
+
+        <section id="registration" style="margin-top: 40px;">
+            <h2>Registration Information</h2>
+            <div class="info-grid" style="margin-top: 15px;">
+                <div class="info-card">
+                    <h3>1. Choose an Event</h3>
+                    <p>Browse the upcoming events and select an activity.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>2. Register</h3>
+                    <p>Click Register Now to reserve an available seat.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>3. Check Status</h3>
+                    <p>View your registration status on the event card.</p>
+                </div>
+            </div>
+            <p id="registrationMessage" role="status"
+               style="margin-top: 15px;"></p>
+        </section>
+
+        <section id="faculty" style="margin-top: 40px;">
+            <h2>Faculty Coordinator Corner</h2>
+
+            <div class="info-card" style="margin-top: 15px;">
+                <h3>Event Coordination</h3>
+                <p>
+                    Faculty coordinators can use this portal concept to
+                    announce activities, communicate schedules and venues,
+                    define participant limits, and monitor registrations.
+                </p>
+                <p>
+                    <strong>Demo coordinator:</strong>
+                    Dr. Campus Events Coordinator
+                </p>
+                <p>
+                    <strong>Contact:</strong>
+                    events@campusconnect.example
+                </p>
+                <p>
+                    <strong>Note:</strong> This demonstration uses sample
+                    events and browser-session registration. It does not
+                    implement faculty login or a persistent database.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>CampusConnect | College Event Management Portal</p>
+        <p>Developed for Agile Development Process and DevOps</p>
+    </footer>
+
+    <script>
+        const events = [
+            {
+                id: 1,
+                title: "Campus Tech Summit 2026",
+                category: "Technical",
+                date: "November 5, 2026",
+                time: "10:00 AM - 4:00 PM",
+                venue: "Technology Auditorium",
+                limit: 120,
+                description: "Explore software engineering, cloud computing, and emerging technologies."
+            },
+            {
+                id: 2,
+                title: "Innovation & AI Workshop",
+                category: "Technical",
+                date: "November 10, 2026",
+                time: "9:30 AM - 1:00 PM",
+                venue: "Computer Science Lab",
+                limit: 60,
+                description: "Learn about artificial intelligence through practical demonstrations."
+            },
+            {
+                id: 3,
+                title: "Cultural Fest: Utsav",
+                category: "Cultural",
+                date: "November 15, 2026",
+                time: "5:00 PM - 9:00 PM",
+                venue: "Main Campus Ground",
+                limit: 300,
+                description: "Celebrate music, dance, creativity, and campus culture."
+            },
+            {
+                id: 4,
+                title: "Career Pathways & Alumni Talk",
+                category: "Career",
+                date: "November 19, 2026",
+                time: "11:00 AM - 1:00 PM",
+                venue: "Seminar Hall A",
+                limit: 100,
+                description: "Meet alumni and discover career and placement opportunities."
+            },
+            {
+                id: 5,
+                title: "Inter-Department Football",
+                category: "Sports",
+                date: "November 22, 2026",
+                time: "3:00 PM - 6:00 PM",
+                venue: "University Sports Ground",
+                limit: 80,
+                description: "Represent your department and compete in a friendly tournament."
+            },
+            {
+                id: 6,
+                title: "Startup Pitch Challenge",
+                category: "Technical",
+                date: "November 28, 2026",
+                time: "10:00 AM - 2:00 PM",
+                venue: "Innovation Centre",
+                limit: 50,
+                description: "Present innovative ideas and receive feedback from mentors."
+            }
+        ];
+
+        // Session-only demo data; it resets when the browser session ends.
+        const registrations = new Set();
+        const registeredCounts = {};
+
+        events.forEach(event => {
+            registeredCounts[event.id] = 0;
+        });
+
+        const eventGrid = document.getElementById("eventGrid");
+        const search = document.getElementById("search");
+        const categoryFilter = document.getElementById("categoryFilter");
+
+        function renderEvents() {
+            const searchText = search.value.toLowerCase().trim();
+            const selectedCategory = categoryFilter.value;
+
+            const filtered = events.filter(event => {
+                const matchesSearch =
+                    event.title.toLowerCase().includes(searchText) ||
+                    event.venue.toLowerCase().includes(searchText);
+
+                const matchesCategory =
+                    selectedCategory === "All" ||
+                    event.category === selectedCategory;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            eventGrid.innerHTML = "";
+
+            if (filtered.length === 0) {
+                eventGrid.innerHTML =
+                    "<p>No events match your search. Try another keyword.</p>";
+                return;
+            }
+
+            filtered.forEach(event => {
+                const registered = registrations.has(event.id);
+                const available = event.limit - registeredCounts[event.id];
+
+                const card = document.createElement("article");
+                card.className = "event-card";
+
+                const title = document.createElement("h3");
+                title.textContent = event.title;
+
+                const category = document.createElement("span");
+                category.className = "category";
+                category.textContent = event.category;
+
+                const description = document.createElement("p");
+                description.textContent = event.description;
+
+                const details = document.createElement("p");
+                details.textContent =
+                    "Date: " + event.date +
+                    "\nTime: " + event.time +
+                    "\nVenue: " + event.venue;
+                details.style.whiteSpace = "pre-line";
+
+                const seats = document.createElement("p");
+                seats.textContent =
+                    "Available seats: " + available + " / " + event.limit;
+
+                const status = document.createElement("p");
+                status.className = "status";
+                status.textContent = registered
+                    ? "Registration status: Registered"
+                    : "Registration status: Not registered";
+
+                const button = document.createElement("button");
+                button.textContent = registered
+                    ? "Already Registered"
+                    : available === 0
+                    ? "Event Full"
+                    : "Register Now";
+
+                button.disabled = registered || available === 0;
+                button.addEventListener("click", () => registerForEvent(event));
+
+                card.append(
+                    category, title, description, details,
+                    seats, status, button
+                );
+
+                eventGrid.appendChild(card);
+            });
+        }
+
+        function registerForEvent(event) {
+            if (registrations.has(event.id)) {
+                return;
+            }
+
+            if (registeredCounts[event.id] >= event.limit) {
+                document.getElementById("registrationMessage").textContent =
+                    "Sorry, this event is full.";
+                return;
+            }
+
+            registrations.add(event.id);
+            registeredCounts[event.id]++;
+
+            document.getElementById("registrationMessage").textContent =
+                "Successfully registered for " + event.title + ".";
+
+            renderEvents();
+        }
+
+        search.addEventListener("input", renderEvents);
+        categoryFilter.addEventListener("change", renderEvents);
+
+        renderEvents();
+    </script>
+</body>
+</html>
